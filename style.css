@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
+:root {
+    --primary: #1e293b;
+    --accent: #0284c7;
+    --nature: #059669;
+    --bg-light: #f8fafc;
+    --card-bg: #ffffff;
+    --sidebar-width: 280px;
+    --radius-lg: 30px;
+    --radius-md: 20px;
+    --shadow-soft: 0 10px 40px rgba(0,0,0,0.04);
+    --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Reset & Base */
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* 1. Background System */
+.site-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100vh;
+    background: url('img/Dieng.jpg') no-repeat center center/cover;
+    z-index: -1;
+}
+
+.site-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.5) 60%, #ffffff 100%);
+}
+
+/* 2. Sidebar Premium */
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100vh;
+    background: #ffffff;
+    border-right: 1px solid rgba(0,0,0,0.05);
+    position: fixed;
+    top: 0; left: 0; z-index: 1000;
+    padding: 30px 25px; /* Reduced top padding */
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 800; margin-bottom: 50px; 
+    color: var(--primary);
+    letter-spacing: -1px;
+}
+
+.sidebar nav { display: flex; flex-direction: column; gap: 8px; }
+
+.sidebar a {
+    text-decoration: none; color: #64748b;
+    font-size: 0.95rem; font-weight: 600; padding: 14px 20px;
+    border-radius: 15px;
+    display: flex; align-items: center; gap: 15px; transition: var(--transition);
+}
+
+.sidebar a i { font-size: 1.1rem; opacity: 0.7; }
+
+.sidebar a:hover {
+    background: #f1f5f9;
+    color: var(--primary);
+    transform: translateX(5px);
+}
+
+.sidebar a.active {
+    background: var(--primary);
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(30, 41, 59, 0.2);
+}
+
+.sidebar-divider { height: 1px; background: rgba(0,0,0,0.05); margin: 25px 0; }
+
+/* 3. Main Area */
+.content-area-with-sidebar {
+    margin-left: var(--sidebar-width);
+    width: calc(100% - var(--sidebar-width));
+    min-height: 100vh;
+    position: relative;
+}
+
+.hero-header {
+    height: 95vh;
+    display: flex;
+    align-items: center;
+    padding: 0 100px;
+    color: white;
+}
+
+.hero-header h1 {
+    font-size: 5rem;
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+/* White Section Overlap (GLASS BORDER & TRANSPARENT) */
+.white-content-section {
+    background: rgba(255, 255, 255, 0.1); /* Background dihilangkan (transparan tipis) */
+    backdrop-filter: blur(25px); /* Efek glass mewah */
+    width: 100%; 
+    padding: 120px 80px;
+    position: relative;
+    z-index: 10;
+    border-radius: 60px 60px 0 0;
+    margin-top: -150px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 -20px 50px rgba(0,0,0,0.1);
+}
+
+.white-content-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; font-weight: 800; color: var(--primary);
+    margin-bottom: 60px; letter-spacing: -2px;
+}
+
+/* Grid & Cards Luxury Nature Style */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 80px;
+}
+
+@media (max-width: 1200px) {
+    .grid-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .grid-container { grid-template-columns: 1fr; }
+}
+
+.card-item {
+    background: var(--card-bg);
+    border-radius: var(--radius-lg);
+    padding: 25px;
+    border: 1px solid rgba(0,0,0,0.04);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+}
+
+.card-item img {
+    width: 100%; height: 220px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: 25px;
+}
+
+.card-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 800; color: var(--primary);
+    margin-bottom: 15px;
+}
+
+.card-item p { font-size: 1.2rem; color: #64748b; line-height: 1.7; margin-bottom: 25px; }
+
+.button-link {
+    text-decoration: none; font-weight: 800; font-size: 0.85rem;
+    color: var(--accent); text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+    margin-top: auto; transition: 0.3s;
+}
+
+.btn-premium {
+    display: inline-flex; align-items: center; gap: 15px; padding: 22px 45px;
+    background: #ffffff; color: var(--primary); text-decoration: none;
+    border-radius: 50px; font-weight: 800; font-size: 1.1rem;
+    text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.btn-premium:hover {
+    transform: scale(1.05) translateY(-5px);
+    background: var(--accent); color: #ffffff;
+    box-shadow: 0 20px 40px rgba(2, 132, 199, 0.3);
+}
+
+/* Auth Pages */
+.auth-page {
+    background: url('img/Dieng.jpg') center/cover;
+    height: 100vh; display: flex; justify-content: center; align-items: center;
+}
+
+.auth-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(15px); }
+.auth-box {
+    position: relative; z-index: 2; background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(30px); padding: 50px; border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.1); width: 100%; max-width: 400px;
+    text-align: center; color: white;
+}
+
+.input-bar {
+    width: 100%; padding: 12px 0; background: transparent; border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2); color: white;
+    margin-bottom: 25px; outline: none;
+}
+
+.btn-small-center {
+    display: inline-block; padding: 15px 40px; background: var(--accent);
+    color: white; border: none; border-radius: 50px; font-weight: 700;
+    font-size: 0.9rem; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+}
+
+/* Testimonials */
+.testimonial-section {
+    background: #ffffff; border: 1px solid rgba(0,0,0,0.03);
+    border-radius: 50px; padding: 100px 60px; margin-bottom: 100px;
+    box-shadow: var(--shadow-soft);
+}
+
+.cat-icon {
+    width: 70px; height: 70px; background: var(--bg-light); border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--accent); font-size: 1.8rem; margin-bottom: 25px;
+}
+
+/* Comment Styles */
+.comment-section { margin-top: 50px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 30px; }
+.comment-box { background: #f1f5f9; padding: 20px; border-radius: 15px; margin-bottom: 20px; }
+
+/* Mobile */
+@media (max-width: 1100px) {
+    .sidebar { transform: translateX(-100%); }
+    .content-area-with-sidebar { margin-left: 0; width: 100%; }
+}

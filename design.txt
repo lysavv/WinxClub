@@ -1,0 +1,97 @@
+________________________________________
+🎯 PROMPT DESIGN WEBSITE (HALAMAN UTAMA)
+Prompt:
+Buat desain halaman utama website wisata dengan konsep modern, clean, dan elegan. Website bernama “Jejak Negeri Atas Awan” yang mengenalkan keindahan Dieng.
+Gunakan layout dengan sidebar (navbar) di sebelah kiri memanjang (vertical navigation) seperti dashboard modern.
+________________________________________
+🧱 Struktur Layout
+•	Sidebar kiri (fixed)
+o	Logo / nama website di atas
+o	Menu navigasi dengan icon:
+	Home
+	Wisata
+	Kuliner
+	Budaya
+	Penginapan
+	Artikel
+	Kontak
+o	Hover effect (highlight + smooth animation)
+•	Main Content (kanan)
+o	Lebih luas, clean, fokus ke visual
+________________________________________
+🌄 Hero Section (Atas)
+•	Background: foto/video panorama Dieng (gunung + kabut)
+•	Overlay gelap transparan biar teks kebaca
+•	Judul besar:
+“Selamat Datang di Dieng”
+•	Subjudul pendek (vibe santai & travel)
+•	Tombol CTA:
+o	“Jelajahi Sekarang”
+________________________________________
+🧭 Section Kategori Utama
+•	3 card horizontal:
+o	Wisata
+o	Kuliner
+o	Budaya
+•	Isi:
+o	Icon / gambar
+o	Judul
+o	Deskripsi singkat
+•	Hover: sedikit zoom + shadow
+________________________________________
+📍 Section Destinasi Populer
+•	Grid card (3–4 kolom)
+•	Isi:
+o	Gambar besar
+o	Nama tempat (Telaga Warna, Sikunir, dll)
+o	Deskripsi singkat
+o	Tombol “Lihat Detail”
+________________________________________
+🍜 Section Kuliner Highlight
+•	Scroll horizontal / carousel
+•	Fokus ke visual makanan
+•	Tambahin harga kisaran
+________________________________________
+🏡 Section Penginapan
+•	Card list:
+o	Foto
+o	Nama tempat
+o	Harga
+o	Rating sederhana (⭐)
+________________________________________
+💬 Testimoni
+•	Card kecil (carousel)
+•	Isi:
+o	Nama
+o	Komentar singkat
+________________________________________
+🗺️ Map Section
+•	Embed Google Maps
+•	Marker lokasi Dieng
+________________________________________
+🎨 Style Design
+•	Warna:
+o	Biru langit (#1C2C39)
+o	Hijau alam
+o	Putih
+o	Abu transparan (glass effect)
+•	Font:
+o	Poppins / Open Sans
+•	Gaya:
+o	Semi glassmorphism (kayak login kamu)
+o	Soft shadow
+o	Rounded corner
+•	Animasi:
+o	Fade in saat scroll
+o	Hover smooth (0.3s)
+________________________________________
+📱 Responsif
+•	Sidebar jadi hamburger menu di HP
+•	Card jadi 1 kolom
+________________________________________
+💡 Tambahan biar makin keren
+•	Kasih efek blur background (kayak login kamu biar nyambung)
+•	Sidebar bisa semi transparan
+•	Tambahin icon (pakai Lucide / FontAwesome)
+________________________________________
+
