@@ -85,13 +85,19 @@ $result = mysqli_query($conn, $sql);
     <link rel="stylesheet" href="style.css?v=1.4">
     <style>
         .dash-header { margin-bottom: 50px; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 60px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 40px; }
         .stat-card { 
             background: white; padding: 30px; border-radius: 25px; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03);
         }
         .stat-card h4 { color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
         .stat-card p { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
+
+        /* Style Baru Untuk Wadah Grafik */
+        .chart-container {
+            background: white; padding: 35px; border-radius: 35px; margin-bottom: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.03); display: flex; flex-direction: column; align-items: center;
+        }
 
         .form-container { 
             background: white; padding: 45px; border-radius: 35px; margin-bottom: 60px;
@@ -125,7 +131,6 @@ $result = mysqli_query($conn, $sql);
             <p style="color: #64748b;">Selamat datang, <strong><?= $_SESSION['username'] ?></strong>. Kelola ekosistem pariwisata Dieng di sini.</p>
         </div>
 
-        <!-- Stats Overview -->
         <div class="stats-grid">
             <div class="stat-card">
                 <h4>Total Konten</h4>
@@ -141,7 +146,14 @@ $result = mysqli_query($conn, $sql);
             </div>
         </div>
 
-        <!-- Add New Item Form -->
+        <div class="chart-container">
+            <h3 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 20px; text-align: center; width: 100%;">
+                Visualisasi Data Ekosistem
+            </h3>
+            <div style="width: 100%; max-width: 250px; aspect-ratio: 1; margin: 0 auto;">
+                <canvas id="canvasGrafikAdmin"></canvas>
+            </div>
+        </div>
         <div class="form-container">
             <h3 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 30px;">Tambah Konten Baru</h3>
             <form action="dashboard.php" method="POST" enctype="multipart/form-data">
@@ -192,7 +204,6 @@ $result = mysqli_query($conn, $sql);
                     </div>
                 </div>
 
-                <!-- Category Specific Fields -->
                 <div id="kuliner-fields" class="extra-fields" style="display:none;">
                     <div class="input-wrap">
                         <label>Menu (Daftar Makanan & Harga)</label>
@@ -225,7 +236,7 @@ $result = mysqli_query($conn, $sql);
                     </div>
                 </div>
 
-                <button type="submit" name="add_item" class="btn-premium" style="width: 100%; border: none; background: var(--primary); color: white; margin-top: 20px;">
+                <button type="submit" name="add_item" class="btn-premium" style="width: 100%; border: none; background: #1e293b; color: white; margin-top: 20px; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer;">
                     Publikasikan Sekarang
                 </button>
             </form>
@@ -256,7 +267,6 @@ $result = mysqli_query($conn, $sql);
             categorySelect.dispatchEvent(new Event('change'));
         </script>
 
-        <!-- Items Table -->
         <h3 style="font-family: 'Playfair Display'; font-size: 1.8rem; margin-bottom: 25px;">Daftar Konten Terbit</h3>
         <div class="table-container">
             <table>
@@ -272,14 +282,14 @@ $result = mysqli_query($conn, $sql);
                 <tbody>
                     <?php while($row = mysqli_fetch_assoc($result)): ?>
                     <tr>
-                        <td style="font-weight: 700; color: var(--primary);"><?= $row['name'] ?></td>
+                        <td style="font-weight: 700; color: #1e293b;"><?= $row['name'] ?></td>
                         <td><span class="badge badge-<?= $row['category'] ?>"><?= ucfirst($row['category']) ?></span></td>
                         <td style="color: #64748b;"><?= $row['location'] ?></td>
                         <?php if($role == 'admin'): ?>
-                            <td style="font-weight: 600; color: var(--accent);"><?= $row['owner_name'] ?? 'System' ?></td>
+                            <td style="font-weight: 600; color: #3b82f6;"><?= $row['owner_name'] ?? 'System' ?></td>
                         <?php endif; ?>
                         <td style="text-align: right;">
-                            <a href="edit_item.php?id=<?= $row['id'] ?>" style="color: var(--accent); text-decoration: none; font-weight: 700; margin-right: 15px;">Edit</a>
+                            <a href="edit_item.php?id=<?= $row['id'] ?>" style="color: #3b82f6; text-decoration: none; font-weight: 700; margin-right: 15px;">Edit</a>
                             <a href="dashboard.php?delete=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus?')" style="color: #ef4444; text-decoration: none; font-weight: 700;">Hapus</a>
                         </td>
                     </tr>
@@ -293,5 +303,51 @@ $result = mysqli_query($conn, $sql);
             </table>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ctxAdmin = document.getElementById('canvasGrafikAdmin').getContext('2d');
+            new Chart(ctxAdmin, {
+                type: 'doughnut', 
+                data: {
+                    labels: ['Total Konten', 'Pengguna Terdaftar', 'Komentar Masuk'],
+                    datasets: [{
+                        // Menggunakan data real-time langsung dari variabel PHP kamu
+                        data: [
+                            <?= $total_items ?>, 
+                            <?= $total_users ?>, 
+                            <?= $total_comments ?>
+                        ],
+                        backgroundColor: [
+                            '#1e293b', // Navy gelap senada dengan tema UI kamu
+                            '#3b82f6', // Blue accent cerah
+                            '#cbd5e1'  // Light slate gray untuk komentar
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                padding: 15
+                            }
+                        }
+                    },
+                    cutout: '73%'
+                }
+            });
+        });
+    </script>
 </body>
 </html>
