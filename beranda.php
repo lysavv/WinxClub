@@ -1,3 +1,9 @@
+<?php
+// Memulai session di bagian paling atas agar status login terdeteksi dengan benar
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,16 +14,12 @@
 </head>
 <body>
     
-    <!-- Background Foto Penuh -->
     <div class="site-bg"></div>
 
-    <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
 
-    <!-- Content Area Sebelah Kanan -->
     <main class="content-area-with-sidebar">
         
-        <!-- Hero Header -->
         <header class="hero-header">
             <div class="hero-text" style="position: relative; z-index: 20;">
                 <p style="text-transform: uppercase; letter-spacing: 6px; font-weight: 800; margin-bottom: 20px; color: #ffffff; opacity: 0.9;">Exploring the majestic</p>
@@ -26,10 +28,8 @@
             </div>
         </header>
 
-        <!-- White Section -->
         <section class="white-content-section">
             
-            <!-- Category Summary -->
             <div style="text-align: center; margin-bottom: 80px;">
                 <h2 style="font-size: 3.5rem; margin-bottom: 20px;">Eksplorasi Pilihan</h2>
                 <p style="color: #64748b; max-width: 600px; margin: 0 auto;">Temukan keajaiban alam, cita rasa kuliner yang menghangatkan, dan warisan budaya luhur di dataran tinggi Dieng.</p>
@@ -56,26 +56,30 @@
                 </a>
             </div>
 
-            <!-- Suara Wisatawan (Dynamic) -->
             <div class="testimonial-section">
                 <h3 style="font-family: 'Playfair Display'; font-size: 3.5rem; text-align: center; margin-bottom: 60px; letter-spacing: -2px;">Suara Wisatawan</h3>
                 <div id="top-comments-display" class="grid-container" style="margin-bottom: 0;">
-                    <!-- Will be populated by JS with most liked comments -->
                     <p style="text-align: center; color: #94a3b8; width: 100%; grid-column: 1 / -1;">Menjelajahi cerita terbaik...</p>
                 </div>
             </div>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
+                    // Sinkronisasi status login dari PHP Session ke JavaScript agar fitur like aman
+                    window.isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
+
                     fetch('get_top_comments.php')
                         .then(res => res.json())
                         .then(data => {
                             const container = document.getElementById('top-comments-display');
                             if (!container) return;
+                            
+                            // JIKA KOSONG: Dipaksa memenuhi seluruh kolom grid dan rata tengah (center)
                             if (data.length === 0) {
-                                container.innerHTML = '<p style="text-align:center; color:#94a3b8; width:100%;">Belum ada cerita perjalanan. Ayo mulai bercerita!</p>';
+                                container.innerHTML = '<p style="text-align: center; color: #94a3b8; width: 100%; grid-column: 1 / -1; font-size: 1.1rem; padding: 20px 0;">Belum ada cerita perjalanan. Ayo mulai bercerita!</p>';
                                 return;
                             }
+                            
                             container.innerHTML = data.map(c => `
                                 <div class="card-item" style="background: var(--bg-light); border: none; padding: 40px;">
                                     <div style="color: var(--accent); margin-bottom: 20px;"><i class="fas fa-quote-left fa-2x"></i></div>
@@ -115,7 +119,6 @@
                     .then(res => res.json())
                     .then(data => {
                         if (data.status === 'liked' || data.status === 'unliked') {
-                            // Reload testimonials to show new order/counts
                             location.reload(); 
                         } else {
                             alert(data.message || 'Gagal memberikan Like');
@@ -124,7 +127,6 @@
                 }
             </script>
 
-            <!-- Map Section -->
             <div style="margin-bottom: 50px;">
                 <h3 style="font-family: 'Playfair Display'; font-size: 2.5rem; margin-bottom: 30px;">Lokasi Strategis</h3>
                 <div style="width: 100%; height: 450px; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
@@ -135,7 +137,7 @@
         </section>
 
         <footer style="padding: 60px; background: white; text-align: center; border-top: 1px solid #f0f0f0;">
-            <p>&copy; 2026 JEJAK NEGERI. Seluruh Hak Cipta Dilindungi.</p>
+            <p>© 2026 JEJAK NEGERI. Seluruh Hak Cipta Dilindungi.</p>
         </footer>
     </main>
 

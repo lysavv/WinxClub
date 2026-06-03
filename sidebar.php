@@ -26,7 +26,6 @@ if ($is_owner) {
 }
 ?>
 <aside class="sidebar">
-    <!-- Profile Section -->
     <div class="sidebar-auth-section" style="margin-bottom: 25px; padding: 0 5px;">
         <?php if (isset($_SESSION['username'])): ?>
             <div class="compact-profile" style="display: flex; align-items: center; gap: 10px;">
@@ -53,15 +52,16 @@ if ($is_owner) {
 
     <nav>
         <?php if ($is_admin && !$is_on_public_page): ?>
-            <!-- ADMIN MANAGEMENT MENU -->
             <p style="font-size: 0.55rem; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 10px; padding-left: 10px;">Control Center</p>
             <a href="dashboard.php" class="<?= ($current_page == 'dashboard.php') ? 'active' : '' ?>"><i class="fas fa-chart-line"></i> Dashboard Pusat</a>
             <a href="manage_articles.php" class="<?= ($current_page == 'manage_articles.php') ? 'active' : '' ?>"><i class="fas fa-newspaper"></i> Manajemen Jurnal</a>
+            
+            <a href="manage_categories.php" class="<?= ($current_page == 'manage_categories.php') ? 'active' : '' ?>"><i class="fas fa-tags"></i> Manajemen Kategori</a>
+            
             <a href="manage_owners.php" class="<?= ($current_page == 'manage_owners.php') ? 'active' : '' ?>"><i class="fas fa-users-cog"></i> Manajemen Owner</a>
             <a href="beranda.php" target="_blank"><i class="fas fa-globe"></i> Lihat Website</a>
 
         <?php elseif ($is_owner && !$is_on_public_page): ?>
-            <!-- OWNER MANAGEMENT MENU -->
             <p style="font-size: 0.55rem; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 10px; padding-left: 10px;">Owner Panel</p>
             <a href="owner_dashboard.php" class="<?= ($current_page == 'owner_dashboard.php') ? 'active' : '' ?>"><i class="fas fa-store"></i> Ringkasan Bisnis</a>
             
@@ -76,7 +76,6 @@ if ($is_owner) {
             <a href="beranda.php" target="_blank"><i class="fas fa-eye"></i> Cek Tampilan Live</a>
 
         <?php else: ?>
-            <!-- PUBLIC MENU (Visible on Beranda, Wisata, etc.) -->
             <p style="font-size: 0.55rem; color: #94a3b8; text-transform: uppercase; font-weight: 800; letter-spacing: 1.5px; margin-bottom: 10px; padding-left: 10px;">Menu Utama</p>
             <a href="beranda.php" class="<?= ($current_page == 'beranda.php') ? 'active' : '' ?>"><i class="fas fa-home"></i> Beranda</a>
             <a href="wisata.php" class="<?= ($current_page == 'wisata.php') ? 'active' : '' ?>"><i class="fas fa-mountain"></i> Wisata</a>

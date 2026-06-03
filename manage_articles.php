@@ -14,6 +14,7 @@ $user_id = $_SESSION['user_id'];
 if (isset($_POST['add_article'])) {
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $content = mysqli_real_escape_string($conn, $_POST['content']);
+    $category = mysqli_real_escape_string($conn, $_POST['category']); 
     $image_path = "";
 
     // Handle File Upload
@@ -28,7 +29,7 @@ if (isset($_POST['add_article'])) {
         }
     }
     
-    $sql = "INSERT INTO articles (title, content, image_url, author_id) VALUES ('$title', '$content', '$image_path', '$user_id')";
+    $sql = "INSERT INTO articles (title, content, category, image_url, author_id) VALUES ('$title', '$content', '$category', '$image_path', '$user_id')";
     mysqli_query($conn, $sql);
     header("Location: manage_articles.php?msg=added");
     exit();
@@ -51,7 +52,11 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
+// Ambil data artikel untuk tabel bawah
 $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC");
+
+// INTEGRASI BARU: Ambil semua opsi kategori untuk mengisi dropdown form secara otomatis
+$cat_options = mysqli_query($conn, "SELECT * FROM categories ORDER BY name ASC");
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +65,7 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manajemen Jurnal - Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css?v=1.5">
     <style>
         .form-container { 
@@ -77,6 +83,11 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
         table { width: 100%; border-collapse: collapse; }
         th { background: #f8fafc; padding: 20px; text-align: left; font-size: 0.75rem; text-transform: uppercase; color: #94a3b8; }
         td { padding: 20px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+        
+        .badge-category {
+            background: #e0f2fe; color: #0369a1; padding: 6px 12px; border-radius: 20px; 
+            font-size: 0.75rem; font-weight: 700; display: inline-block; text-transform: uppercase;
+        }
     </style>
 </head>
 <body style="background: #f8fafc;">
@@ -95,6 +106,17 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
                     <label>Judul Artikel</label>
                     <input type="text" name="title" class="dash-input" placeholder="Contoh: Keajaiban Blue Fire Dieng" required>
                 </div>
+                
+                <div class="input-wrap">
+                    <label>Kategori Jurnal</label>
+                    <select name="category" class="dash-input" required>
+                        <option value="" disabled selected>-- Pilih Kategori --</option>
+                        <?php while($row_cat = mysqli_fetch_assoc($cat_options)): ?>
+                            <option value="<?= htmlspecialchars($row_cat['name']) ?>"><?= htmlspecialchars($row_cat['name']) ?></option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+
                 <div class="input-wrap">
                     <label>Isi Konten</label>
                     <textarea name="content" class="dash-input" style="height: 300px; resize: none;" placeholder="Tulis wawasan lengkap di sini..." required></textarea>
@@ -115,6 +137,7 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
                     <tr>
                         <th>Thumbnail</th>
                         <th>Judul</th>
+                        <th>Kategori</th> 
                         <th>Tanggal Terbit</th>
                         <th style="text-align: right;">Aksi</th>
                     </tr>
@@ -130,6 +153,11 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
                             <?php endif; ?>
                         </td>
                         <td style="font-weight: 700; color: var(--primary);"><?= $art['title'] ?></td>
+                        
+                        <td>
+                            <span class="badge-category"><?= htmlspecialchars($art['category'] ?? 'Umum') ?></span>
+                        </td>
+
                         <td style="color: #64748b;"><?= date('d M Y', strtotime($art['created_at'])) ?></td>
                         <td style="text-align: right;">
                             <a href="article_detail.php?id=<?= $art['id'] ?>" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 700; margin-right: 20px;"><i class="fas fa-eye"></i> Lihat</a>
@@ -139,7 +167,7 @@ $art_res = mysqli_query($conn, "SELECT * FROM articles ORDER BY created_at DESC"
                     <?php endwhile; ?>
                     <?php if(mysqli_num_rows($art_res) == 0): ?>
                     <tr>
-                        <td colspan="3" style="text-align: center; padding: 40px; color: #94a3b8;">Belum ada artikel yang diterbitkan.</td>
+                        <td colspan="5" style="text-align: center; padding: 40px; color: #94a3b8;">Belum ada artikel yang diterbitkan.</td>
                     </tr>
                     <?php endif; ?>
                 </tbody>
