@@ -14,7 +14,7 @@
         <header class="hero-header">
             <div class="hero-text">
                 <p style="text-transform: uppercase; letter-spacing: 4px; font-weight: 600; margin-bottom: 10px; opacity: 0.8;">Wawasan & Cerita</p>
-                <h1>Jurnal Dieng.</h1>
+                <h1>Jurnal Dieng</h1>
             </div>
         </header>
 
@@ -53,7 +53,7 @@
         </section>
 
         <footer style="padding: 60px; background: white; text-align: center; border-top: 1px solid #f0f0f0;">
-            <p>&copy; 2026 JEJAK NEGERI. Seluruh Hak Cipta Dilindungi.</p>
+            <p>&copy; 2026 JEJAK NEGERI DIATAS AWAN. Seluruh Hak Cipta Dilindungi.</p>
         </footer>
     </main>
     <script src="script.js"></script> 
