@@ -23,7 +23,7 @@ if (!$article) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $article['title'] ?> - Jejak Negeri</title>
+    <title><?= $article['title'] ?> - Jejak Negeri Diatas Awan</title>
     <link rel="stylesheet" href="style.css?v=2.0"> 
     <style>
         .article-hero {
